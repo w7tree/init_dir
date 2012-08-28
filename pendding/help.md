@@ -1,1 +1,0 @@
--h,help : show command list

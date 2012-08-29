@@ -1,28 +1,29 @@
 $cd = ENV["PWD"] + "/"
 class MakeFile
-  def self.create(file)
-    if File.exists?($cd + file)
-      puts "#{file} already exists."
+  def self.create(file,dir="")
+    dir = dir + "/" unless dir =~ /\/$/ || dir == ""
+    if File.exists?($cd + dir + file)
+      puts "#{dir}#{file} already exists."
     else
-      file_make(file)
+      file_make(file,dir)
     end
   end
 
-  def self.file_read(source)
-    path = "#{ENV["HOME"]}/init_dir/source/#{source}"
+  def self.file_read(source,dir)
+    path = "#{ENV["HOME"]}/init_dir/source/#{dir}#{source}"
     if File.exists?(path)
       File.open(path) { |f| @source = f.read }
       return true
     else
-      puts "#{path} is not found"
+      puts "#{source} is not found in '~/init_dir/source/#{dir}'"
       return false
     end
   end
 
-  def self.file_make(file)
-    if file_read(file)
-      File.write($cd + file,@source)
-      puts "create #{file}"
+  def self.file_make(file,dir)
+    if file_read(file,dir)
+      File.write($cd + dir + file,@source)
+      puts "create file #{dir}#{file}"
     end
   end
 
@@ -42,7 +43,7 @@ class MakeDir
     if File.exists?($cd + dir)
       puts "#{dir}/ already exists"
     else
-      puts "create #{dir}/"
+      puts "create directory #{dir}/"
       Dir.mkdir($cd + dir)
     end
   end

@@ -1,15 +1,7 @@
-require "#{ENV["HOME"]}/init_dir/lib/common.rb"
+require "#{ENV['HOME']}/init_dir/lib/common.rb"
 
-namespace :html do
-  desc "create basic html directory set"
-  task "basic" do
-    MakeFile.create("index.html")
-    dirs = %w|css js|
-    MakeDir.create(dirs)
-  end
-
-  desc "test"
-  task "test" do
-    puts $cd
-  end
+task_path = "#{ENV['HOME']}/init_dir/task/"
+Dir.foreach(task_path) do |f|
+  task = "#{task_path}#{f}"
+  require(task) if File.ftype(task) == "file"
 end
